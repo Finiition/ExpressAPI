@@ -24,24 +24,6 @@ const data = {
  ]
 }
 
-// middlewares
-function findCarAndPutInRequest(req, res, next) {
-  const carIndex = cars.findIndex(
-    c => c.id === parseInt(req.params.carId))
-  if (carIndex !== -1) {
-    req.car = cars[carIndex]
-    req.carIndex = carIndex
-  }
-  next()
-}
-
-function interruptIfNotFound(req, res, next) {
-  if (req.car) {
-    next()
-  } else {
-    res.status(404).json({ error: 'Car not found' })
-  }
-}
 
 function validateCarDataInRequestBody(req, res, next) {
   const carData = req.body

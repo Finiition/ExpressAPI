@@ -1,5 +1,6 @@
 function findPersonAndPutInRequest(req,res,next){
-    const personIndex = data.persons.findIndex(p => p.id === parseInt(req.params.personId))
+    const personIndex = data.persons.findIndex(
+        p => p.id === parseInt(req.params.personId))
     if(personIndex !== -1){
       req.data.persons = data.persons[personIndex]
       req.personIndex = personIndex
@@ -7,6 +8,15 @@ function findPersonAndPutInRequest(req,res,next){
     next()
   }
 
+
+  function interruptIfNotFoundPerson(req, res, next) {
+    if (req.data.persons) {
+      next()
+    } else {
+      res.status(404).json({ error: 'Person not found' })
+    }
+  }
+  
 
 function validatePersonDataInRequestBody(req,res,next){
     const personData = req.body
