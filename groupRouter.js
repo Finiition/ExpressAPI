@@ -1,4 +1,16 @@
+const express = require('express')
+const groupRouter = express.Router()
+let nextGroupId = 0
 
+const data = {   
+  groups: [
+    { id: nextGroupId++, name : "Les Valdez",members :[1,4,5] },
+    { id: nextGroupId++, name : "Flashers",members :[2,3,7] },
+    { id: nextGroupId++, name : "Issou Gang",members :[5,6] },
+    { id: nextGroupId++, name : "Pearlers",members :[3,6,7] },
+    { id: nextGroupId++, name : "Cafeinz",members :[4,1,2] }
+ ]
+}
 function findGroupAndPutInRequest(req,res,next){
     const groupIndex = data.groups.findIndex(p => p.id === parseInt(req.params.groupId))
     if(groupIndex !== -1){
@@ -38,3 +50,8 @@ function validatePersonDataInRequestBody(req,res,next){
       res.status(400).json({ error: 'missing groups ( no name, no member(s))' })
     }
   }
+
+
+  groupRouter.get('/groups', (req, res) => res.json(data.groups))
+
+  module.exports = groupRouter

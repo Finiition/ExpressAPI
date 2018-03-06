@@ -27,8 +27,7 @@ const data = {
 
 // lectures
 app.get('/persons', (req, res) => res.json(data.persons))
-app.get('/groups', (req, res) => res.json(data.groups))
-
+app.use('/groups',require('./groupRouter'))
 
 
 
