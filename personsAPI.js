@@ -1,3 +1,6 @@
+
+
+// middlewares
 function findPersonAndPutInRequest(req,res,next){
     const personIndex = data.persons.findIndex(
         p => p.id === parseInt(req.params.personId))
@@ -9,7 +12,7 @@ function findPersonAndPutInRequest(req,res,next){
   }
 
 
-  function interruptIfNotFoundPerson(req, res, next) {
+function interruptIfNotFoundPerson(req, res, next) {
     if (req.data.persons) {
       next()
     } else {
@@ -44,3 +47,9 @@ function validatePersonDataInRequestBody(req,res,next){
       res.status(400).json({ error: 'missing person ( no name, no last name, no number(s)' })
     }
   }
+
+
+
+// lectures
+
+app.get('/persons', (req, res) => res.json(data.persons))

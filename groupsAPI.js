@@ -1,3 +1,4 @@
+
 function findGroupAndPutInRequest(req,res,next){
     const groupIndex = data.groups.findIndex(p => p.id === parseInt(req.params.groupId))
     if(groupIndex !== -1){
@@ -7,7 +8,8 @@ function findGroupAndPutInRequest(req,res,next){
     next()
   }
 
-  function interruptIfNotFoundPerson(req, res, next) {
+  
+function interruptIfNotFoundPerson(req, res, next) {
     if (req.data.groups) {
       next()
     } else {
@@ -15,7 +17,8 @@ function findGroupAndPutInRequest(req,res,next){
     }
   }
 
-  function validatePersonDataInRequestBody(req,res,next){
+function validatePersonDataInRequestBody(req,res,next){
+
     const groupData = req.body
     if(groupData.name){
       next()
