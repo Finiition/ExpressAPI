@@ -14,23 +14,31 @@ const data = {
 function findGroupAndPutInRequest(req,res,next){
     const groupIndex = data.groups.findIndex(p => p.id === parseInt(req.params.groupId))
     if(groupIndex !== -1){
-      req.data.groups = data.groups[groupIndex]
+      req.group = data.groups[groupIndex]
+      req.name = data.groups[groupIndex].name
+      req.members = data.groups[groupIndex].members
       req.groupIndex = groupIndex
     }
     next()
   }
 
   
-function interruptIfNotFoundPerson(req, res, next) {
-    if (req.data.groups) {
+
+/**
+ * Regarde si le groupe passé en paramètre de la requête existe, si non retourne une erreur.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function interruptIfNotFoundGroup(req, res, next) {
+    if (req.group) {
       next()
     } else {
       res.status(404).json({ error: 'Group not found' })
     }
   }
 
-function validatePersonDataInRequestBody(req,res,next){
-
+function validateGroupDataInRequestBody(req,res,next){
     const groupData = req.body
     if(groupData.name){
       next()
@@ -52,6 +60,16 @@ function validatePersonDataInRequestBody(req,res,next){
   }
 
 
-  groupRouter.get('/', (req, res) => res.json(data.groups))
-
-  module.exports = groupRouter
+  // Get tous les groupes
+  groupRouter.get('/',findGroupAndPutInRequest, (req, res) => res.json(data.groups))
+  // Get le groupe possedant l'id passé en paramètre (s'il existe)
+  groupRouter.get('/:groupId', findGroupAndPutInRequest,
+  (req, res) => {
+    const group = data.groups.find(
+      g => g.id === parseInt(req.params.groupId))
+      if (group) {
+        res.json(group)  
+      } else {
+        res.status(404).json({ error: 'Group not found' }) 
+    }}) 
+ module.exports = groupRouter
