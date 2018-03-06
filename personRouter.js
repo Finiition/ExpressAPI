@@ -19,7 +19,10 @@ function findPersonAndPutInRequest(req,res,next){
     const personIndex = data.persons.findIndex(
         p => p.id === parseInt(req.params.personId))
     if(personIndex !== -1){
-      req.data.persons = data.persons[personIndex]
+      req.person = data.persons[personIndex]
+      req.name = data.persons[personIndex].name
+      req.lastName = data.persons[personIndex].lastName
+      req.numbers = data.persons[personIndex].numbers
       req.personIndex = personIndex
     }
     next()
@@ -27,7 +30,7 @@ function findPersonAndPutInRequest(req,res,next){
 
 
 function interruptIfNotFoundPerson(req, res, next) {
-    if (req.data.persons) {
+    if (req.person) {
       next()
     } else {
       res.status(404).json({ error: 'Person not found' })
@@ -67,5 +70,14 @@ function validatePersonDataInRequestBody(req,res,next){
 // lectures
 
 personRouter.get('/', (req, res) => res.json(data.persons))
+personRouter.get('/:personId', findPersonAndPutInRequest,interruptIfNotFoundPerson,
+(req, res) => {
+  const person = data.persons.find(
+    p => p.id === parseInt(req.params.personId))
+    if (person) {
+      res.json(person)  
+    } else {
+      res.status(404).json({ error: 'Person not found' })
+  }}) 
 
 module.exports = personRouter
