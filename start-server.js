@@ -1,34 +1,10 @@
 const express = require('express')
 const app = express()
 app.use(require('body-parser').json())
-
-let nextPersonId = 0
-let nextGroupId = 0
-const data = {  
-  persons: [
-    { id: nextPersonId++, name: 'Jacques', lastName: 'VILLALON' ,numbers:["0624572559"] },
-    { id: nextPersonId++, name: 'Kevin', lastName: 'VALDEZ' ,numbers:["0673928176","0283946102"] },
-    { id: nextPersonId++, name: 'Patrick ', lastName: 'JACQUES' ,numbers:["0296398217"] },
-    { id: nextPersonId++, name: 'Mobley ', lastName: 'TRENTON' ,numbers:["0285639472"] },
-    { id: nextPersonId++, name: 'Sachet ', lastName: 'PAUCHMON' ,numbers:["0737456472"] },
-    { id: nextPersonId++, name: 'Darlene ', lastName: 'ALDERSON' ,numbers:["0792618462","0234789187"] },
-    { id: nextPersonId++, name: 'Bilbo ', lastName: 'SACQUET' ,numbers:["0312345679","0123456789"] },
-    { id: nextPersonId++, name: 'David ', lastName: 'DIEGO' ,numbers:["0666333786","0285639472"]}
-  ] , 
-  groups: [
-    { id: nextGroupId++, name : "Les Valdez",members :[1,4,5] },
-    { id: nextGroupId++, name : "Flashers",members :[2,3,7] },
-    { id: nextGroupId++, name : "Issou Gang",members :[5,6] },
-    { id: nextGroupId++, name : "Pearlers",members :[3,6,7] },
-    { id: nextGroupId++, name : "Cafeinz",members :[4,1,2] }
- ]
-}
-
+app.use('/groups',require('./groupRouter'))
+app.use('/persons',require('./personRouter'))
 
 // lectures
-app.get('/persons', (req, res) => res.json(data.persons))
-app.use('/groups',require('./groupRouter'))
-
 
 
 // app.get('/cars/by-brand', (req, res) => {

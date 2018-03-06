@@ -66,6 +66,6 @@ function validatePersonDataInRequestBody(req,res,next){
 
 // lectures
 
-app.get('/persons', (req, res) => res.json(data.persons))
+personRouter.get('/', (req, res) => res.json(data.persons))
 
 module.exports = personRouter

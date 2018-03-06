@@ -52,6 +52,6 @@ function validatePersonDataInRequestBody(req,res,next){
   }
 
 
-  groupRouter.get('/groups', (req, res) => res.json(data.groups))
+  groupRouter.get('/', (req, res) => res.json(data.groups))
 
   module.exports = groupRouter
