@@ -75,9 +75,9 @@ personRouter.get('/:personId', findPersonAndPutInRequest,interruptIfNotFoundPers
 }}) 
 
 /**
- * Example : localhost:3000/persons/ajout?name=test&lastName=test&numbers=[0792618465]
+ * Example : localhost:3000/persons?name=test&lastName=test&numbers=[0792618465]
  */
-personRouter.post('/ajout' , (req, res) => {
+personRouter.post('/' , (req, res) => {
     const personData = req.query
     if (personData.name && personData.lastName && personData.numbers) {
       const person = Object.assign({ id: nextPersonId }, personData)

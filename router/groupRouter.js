@@ -69,7 +69,10 @@ function validateGroupDataInRequestBody(req,res,next){
         res.status(404).json({ error: 'Group not found' }) 
   }})
 
-  groupRouter.post('/ajout' , (req, res) => {
+  /**
+   * Example : localhost:3000/groups?name=test&members=[4,1]
+   */
+  groupRouter.post('/' , (req, res) => {
     const groupData = req.query
     console.log(groupData.members)
     if (groupData.name && groupData.members) {
