@@ -125,4 +125,18 @@ groupRouter.put('/:groupId', (req, res) => {
   }
 })
 
+/**
+ * Example : localhost:3000/groups/1/addMember?members=[1,2,3]
+ */
+groupRouter.patch('/:groupId/addMember', (req, res) => {
+  const group = groups.find(c => c.id === parseInt(req.params.groupId))
+  if (group) {
+    const groupData = req.query
+    Object.assign(group, groupData)
+    res.status(200).json(group)
+  } else {
+    res.status(404).json({ error: 'group not found' })
+  }
+})
+
  module.exports = groupRouter
