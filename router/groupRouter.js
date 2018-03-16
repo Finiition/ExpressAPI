@@ -20,7 +20,13 @@ function findGroupAndPutInRequest(req,res,next){
     next()
   }
 
-
+function deleteGroup(groupId){
+  const groupIndex = groups.findIndex(p => p.id === parseInt(groupId))
+  console.log("Suppresion d'un groupe à l'index",groupIndex);
+  if (groupIndex >= 0) {
+    groups.splice(groupIndex, 1)
+  }
+}
 
 /**
  * Regarde si le groupe passé en paramètre de la requête existe, si non retourne une erreur.
@@ -74,15 +80,16 @@ function findGroupAndDeleteInRequest(){
   }})
 
   //Suppression d'un groupe
-  groupRouter.delete('/', (req, res) => {
-    console.log(req.query);
-    /*const group = groups.find(
+  groupRouter.delete('/:groupId',findGroupAndPutInRequest, (req, res) => {
+    const group = groups.find(
       g => g.id === parseInt(req.params.groupId))
       if (group) {
-        res.json(group)
+        deleteGroup(req.params.groupId)
+        res.redirect('/groups', 302)
       } else {
         res.status(404).json({ error: 'Group not found' })
-  }*/})
+    }
+  })
 
   /**
  * Example : localhost:3000/groups?name=test&members=[1,2,3]

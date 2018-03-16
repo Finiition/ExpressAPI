@@ -33,7 +33,13 @@ function interruptIfNotFoundPerson(req, res, next) {
       res.status(404).json({ error: 'Person not found' })
     }
 }
-  
+function deletePerson(personId){
+  const personIndex = persons.findIndex(p => p.id === parseInt(personId))
+  console.log("Suppresion d'une personne à l'index",personIndex);
+  if (personIndex >= 0) {
+    persons.splice(personIndex, 1)
+  }
+}
 function validatePersonDataInRequestBody(req,res,next){
     const personData = req.body
     if(personData.name){
@@ -41,19 +47,19 @@ function validatePersonDataInRequestBody(req,res,next){
     }else{
       res.status(400).json({ error: 'missing persons name' })
     }
-  
+
     if (personData.lastName){
       next()
     }else{
       res.status(400).json({ error: 'missing persons last name' })
     }
-  
+
     if (personData.numbers){
       next()
     }else{
       res.status(400).json({ error: 'missing persons number(s)' })
     }
-  
+
     if (personData.name && personData.lastName && personData.numbers){
       next()
     }else{
@@ -69,10 +75,23 @@ personRouter.get('/:personId', findPersonAndPutInRequest,interruptIfNotFoundPers
   const person = persons.find(
     p => p.id === parseInt(req.params.personId))
     if (person) {
-      res.json(person)  
+      res.json(person)
     } else {
       res.status(404).json({ error: 'Person not found' })
-}}) 
+}})
+
+  //Suppression d'un groupe
+  personRouter.delete('/:personId',findPersonAndPutInRequest, (req, res) => {
+    console.log(req.params.personId);
+    const person = persons.find(
+      p => p.id === parseInt(req.params.personId))
+      if (person) {
+        deletePerson(req.params.personId)
+        res.redirect('/persons', 302)
+      } else {
+        res.status(404).json({ error: 'Group not found' })
+    }
+  })
 
 /**
  * Example : localhost:3000/persons?name=test&lastName=test&numbers=[0792618465]
