@@ -81,6 +81,9 @@ personRouter.get('/:personId', findPersonAndPutInRequest,interruptIfNotFoundPers
 }})
 
   //Suppression d'un groupe
+  /**
+    * Example : localhost:3000/persons/1
+    */
   personRouter.delete('/:personId',findPersonAndPutInRequest, (req, res) => {
     console.log(req.params.personId);
     const person = persons.find(

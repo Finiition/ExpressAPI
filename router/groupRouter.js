@@ -80,6 +80,9 @@ function findGroupAndDeleteInRequest(){
   }})
 
   //Suppression d'un groupe
+  /**
+   * Example : localhost:3000/groups/1
+   */
   groupRouter.delete('/:groupId',findGroupAndPutInRequest, (req, res) => {
     const group = groups.find(
       g => g.id === parseInt(req.params.groupId))
