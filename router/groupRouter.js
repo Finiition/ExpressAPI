@@ -20,13 +20,13 @@ function findGroupAndPutInRequest(req,res,next){
     next()
   }
 
-  
+
 
 /**
  * Regarde si le groupe passé en paramètre de la requête existe, si non retourne une erreur.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 function interruptIfNotFoundGroup(req, res, next) {
     if (req.group) {
@@ -43,7 +43,7 @@ function validateGroupDataInRequestBody(req,res,next){
     }else{
       res.status(400).json({ error: 'missing groups names' })
     }
-  
+
     if (groupData.members){
       next()
     }else{
@@ -56,6 +56,10 @@ function validateGroupDataInRequestBody(req,res,next){
       res.status(400).json({ error: 'missing groups ( no name, no member(s))' })
     }
 }
+
+function findGroupAndDeleteInRequest(){
+
+}
   // Get tous les groupes
   groupRouter.get('/',findGroupAndPutInRequest, (req, res) => res.json(groups))
   // Get le groupe possedant l'id passé en paramètre (s'il existe)
@@ -64,15 +68,23 @@ function validateGroupDataInRequestBody(req,res,next){
     const group = groups.find(
       g => g.id === parseInt(req.params.groupId))
       if (group) {
-        res.json(group)  
+        res.json(group)
       } else {
-        res.status(404).json({ error: 'Group not found' }) 
+        res.status(404).json({ error: 'Group not found' })
   }})
 
-  /**
-   * Example : localhost:3000/groups?name=test&members=[4,1]
-   */
-  groupRouter.post('/' , (req, res) => {
+  //Suppression d'un groupe
+  groupRouter.delete('/', (req, res) => {
+    console.log(req.query);
+    /*const group = groups.find(
+      g => g.id === parseInt(req.params.groupId))
+      if (group) {
+        res.json(group)
+      } else {
+        res.status(404).json({ error: 'Group not found' })
+  }*/})
+
+  groupRouter.post('/ajout' , (req, res) => {
     const groupData = req.query
     console.log(groupData.members)
     if (groupData.name && groupData.members) {
