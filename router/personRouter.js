@@ -89,5 +89,23 @@ personRouter.post('/' , (req, res) => {
     }
 })
 
+/**
+ * Example : localhost:3000/persons/1?name=test&lastName=test&numbers=[1234567]
+ */
+personRouter.put('/:personId', (req, res) => {
+  const person = persons.find(c => c.id === parseInt(req.params.personId))
+  if (person) {
+    const personData = req.query
+    if (personData.name && personData.lastName) {
+      Object.assign(person, personData)
+      res.status(200).json(person)
+    } else {
+      res.status(400).json({ error: 'Invalid person' })
+    }
+  } else {
+    res.status(404).json({ error: 'person not found' })
+  }
+})
+
 
 module.exports = personRouter

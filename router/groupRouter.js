@@ -85,4 +85,22 @@ function validateGroupDataInRequestBody(req,res,next){
     }
   })
 
+/**
+ * Example : localhost:3000/groups/1?name=test
+ */
+groupRouter.put('/:groupId', (req, res) => {
+  const group = groups.find(c => c.id === parseInt(req.params.groupId))
+  if (group) {
+    const groupData = req.query
+    if (groupData.name) {
+      Object.assign(group, groupData)
+      res.status(200).json(group)
+    } else {
+      res.status(400).json({ error: 'Invalid group' })
+    }
+  } else {
+    res.status(404).json({ error: 'group not found' })
+  }
+})
+
  module.exports = groupRouter
