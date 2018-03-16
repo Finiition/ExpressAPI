@@ -84,6 +84,9 @@ function findGroupAndDeleteInRequest(){
         res.status(404).json({ error: 'Group not found' })
   }*/})
 
+  /**
+ * Example : localhost:3000/groups?name=test&members=[1,2,3]
+ */
   groupRouter.post('/ajout' , (req, res) => {
     const groupData = req.query
     console.log(groupData.members)
