@@ -2,21 +2,19 @@ const express = require('express')
 const groupRouter = express.Router()
 let nextGroupId = 0
 
-const data = {   
-  groups: [
+const groups = [
     { id: nextGroupId++, name : "Les Valdez",members :[1,4,5] },
     { id: nextGroupId++, name : "Flashers",members :[2,3,7] },
     { id: nextGroupId++, name : "Issou Gang",members :[5,6] },
     { id: nextGroupId++, name : "Pearlers",members :[3,6,7] },
     { id: nextGroupId++, name : "Cafeinz",members :[4,1,2] }
- ]
-}
+]
 function findGroupAndPutInRequest(req,res,next){
-    const groupIndex = data.groups.findIndex(p => p.id === parseInt(req.params.groupId))
+    const groupIndex = groups.findIndex(p => p.id === parseInt(req.params.groupId))
     if(groupIndex !== -1){
-      req.group = data.groups[groupIndex]
-      req.name = data.groups[groupIndex].name
-      req.members = data.groups[groupIndex].members
+      req.group = groups[groupIndex]
+      req.name = groups[groupIndex].name
+      req.members = groups[groupIndex].members
       req.groupIndex = groupIndex
     }
     next()
@@ -39,7 +37,7 @@ function interruptIfNotFoundGroup(req, res, next) {
   }
 
 function validateGroupDataInRequestBody(req,res,next){
-    const groupData = req.body
+    const groupData = req.query
     if(groupData.name){
       next()
     }else{
@@ -57,19 +55,31 @@ function validateGroupDataInRequestBody(req,res,next){
     }else{
       res.status(400).json({ error: 'missing groups ( no name, no member(s))' })
     }
-  }
-
-
+}
   // Get tous les groupes
-  groupRouter.get('/',findGroupAndPutInRequest, (req, res) => res.json(data.groups))
+  groupRouter.get('/',findGroupAndPutInRequest, (req, res) => res.json(groups))
   // Get le groupe possedant l'id passé en paramètre (s'il existe)
   groupRouter.get('/:groupId', findGroupAndPutInRequest,
-  (req, res) => {
-    const group = data.groups.find(
+    (req, res) => {
+    const group = groups.find(
       g => g.id === parseInt(req.params.groupId))
       if (group) {
         res.json(group)  
       } else {
         res.status(404).json({ error: 'Group not found' }) 
-    }}) 
+  }})
+
+  groupRouter.post('/ajout' , (req, res) => {
+    const groupData = req.query
+    console.log(groupData.members)
+    if (groupData.name && groupData.members) {
+      const group = Object.assign({ id: nextGroupId }, groupData)
+      nextGroupId++
+      groups.push(group)
+      res.status(201).json(group)
+    } else {
+      res.status(400).json({ error: '400 : Invalid group'})
+    }
+  })
+
  module.exports = groupRouter
