@@ -132,7 +132,7 @@ personRouter.put('/:personId', (req, res) => {
 personRouter.patch('/:personId/addNumber', (req, res) => {
   const person = persons.find(c => c.id === parseInt(req.params.personId))
   if (person) {
-    const personData = req.body
+    const personData = req.query
     Object.assign(person, personData)
     res.status(200).json(person)
   } else {
