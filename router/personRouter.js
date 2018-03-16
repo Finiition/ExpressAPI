@@ -107,5 +107,19 @@ personRouter.put('/:personId', (req, res) => {
   }
 })
 
+/**
+ * Example : localhost:3000/persons/1/addNumber?numbers=155555555
+ */
+personRouter.patch('/:personId/addNumber', (req, res) => {
+  const person = persons.find(c => c.id === parseInt(req.params.personId))
+  if (person) {
+    const personData = req.body
+    Object.assign(person, personData)
+    res.status(200).json(person)
+  } else {
+    res.status(404).json({ error: 'person not found' })
+  }
+})
+
 
 module.exports = personRouter
